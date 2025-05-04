@@ -1,6 +1,13 @@
-import { Model } from 'sequelize';
-import { Column, DataType, ForeignKey, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  ForeignKey,
+  Table,
+  Model,
+  HasMany,
+} from 'sequelize-typescript';
 import { DateEntityType } from '../../types';
+import { Sneaker } from './Sneaker.entity';
 
 @Table({
   tableName: 'brands',
@@ -26,4 +33,7 @@ export class Brand extends Model<Brand> {
     allowNull: true,
   })
   updated_at: DateEntityType;
+
+  @HasMany(() => Sneaker)
+  sneakers: Sneaker[];
 }

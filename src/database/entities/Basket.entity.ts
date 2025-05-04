@@ -1,6 +1,16 @@
-import { Model } from 'sequelize';
-import { Column, DataType, ForeignKey, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  Table,
+  Model,
+  BelongsToMany,
+} from 'sequelize-typescript';
 import { DateEntityType } from '../../types';
+import { User } from './User.entity';
+import { Sneaker } from './Sneaker.entity';
+import { BasketSneaker } from './BasketSneaker.entity';
 
 @Table({
   tableName: 'baskets',
@@ -9,6 +19,7 @@ import { DateEntityType } from '../../types';
   updatedAt: 'updated_at',
 })
 export class Basket extends Model<Basket> {
+  @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
     allowNull: true,
@@ -26,4 +37,10 @@ export class Basket extends Model<Basket> {
     allowNull: true,
   })
   updated_at: DateEntityType;
+
+  @BelongsTo(() => User)
+  user: User;
+
+  @BelongsToMany(() => Sneaker, () => BasketSneaker)
+  sneakers: Sneaker[];
 }

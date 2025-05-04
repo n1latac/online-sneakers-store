@@ -1,6 +1,13 @@
-import { Model } from 'sequelize';
-import { Column, DataType, ForeignKey, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  ForeignKey,
+  Table,
+  Model,
+  BelongsTo,
+} from 'sequelize-typescript';
 import { DateEntityType } from '../../types';
+import { Sneaker } from './Sneaker.entity';
 
 @Table({
   tableName: 'sneakers_info',
@@ -9,6 +16,7 @@ import { DateEntityType } from '../../types';
   updatedAt: 'updated_at',
 })
 export class SneakersInfo extends Model<SneakersInfo> {
+  @ForeignKey(() => Sneaker)
   @Column({
     type: DataType.INTEGER,
     allowNull: true,
@@ -38,4 +46,7 @@ export class SneakersInfo extends Model<SneakersInfo> {
     allowNull: true,
   })
   updated_at: DateEntityType;
+
+  @BelongsTo(() => Sneaker)
+  sneaker: Sneaker;
 }

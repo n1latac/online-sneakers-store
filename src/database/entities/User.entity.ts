@@ -1,6 +1,6 @@
-import { Model } from 'sequelize';
-import { Column, DataType, Table } from 'sequelize-typescript';
+import { Column, DataType, Table, Model, HasMany } from 'sequelize-typescript';
 import { DateEntityType } from '../../types';
+import { Rating } from './Rating.entity';
 
 @Table({
   tableName: 'users',
@@ -53,4 +53,7 @@ export class User extends Model<User> {
     allowNull: true,
   })
   updated_at: DateEntityType;
+
+  @HasMany(() => Rating)
+  ratings: Rating[];
 }

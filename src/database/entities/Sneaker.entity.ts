@@ -1,6 +1,18 @@
-import { Model } from 'sequelize';
-import { Column, DataType, ForeignKey, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  ForeignKey,
+  Table,
+  Model,
+  HasMany,
+  BelongsTo,
+  HasOne,
+} from 'sequelize-typescript';
 import { DateEntityType } from '../../types';
+import { Rating } from './Rating.entity';
+import { Type } from './Type.entity';
+import { Brand } from './Brand.entity';
+import { SneakersInfo } from './SneakersInfo.entity';
 
 @Table({
   tableName: 'sneakers',
@@ -27,12 +39,14 @@ export class Sneaker extends Model<Sneaker> {
   })
   img: string;
 
+  @ForeignKey(() => Type)
   @Column({
     type: DataType.INTEGER,
     allowNull: true,
   })
   type_id: number;
 
+  @ForeignKey(() => Brand)
   @Column({
     type: DataType.INTEGER,
     allowNull: true,
@@ -56,4 +70,16 @@ export class Sneaker extends Model<Sneaker> {
     allowNull: true,
   })
   updated_at: DateEntityType;
+
+  @HasMany(() => Rating)
+  ratings: Rating[];
+
+  @BelongsTo(() => Type)
+  type: Type;
+
+  @BelongsTo(() => Brand)
+  brand: Brand;
+
+  @HasOne(() => SneakersInfo)
+  sneakersInfo: SneakersInfo;
 }
