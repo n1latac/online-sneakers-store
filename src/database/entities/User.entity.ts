@@ -5,7 +5,7 @@ import { Rating } from './Rating.entity';
 @Table({
   tableName: 'users',
   defaultScope: {
-    attributes: { exclude: ['password'] },
+    attributes: { exclude: ['password', 'refresh_token'] },
   },
   timestamps: true,
   createdAt: 'created_at',
@@ -53,6 +53,12 @@ export class User extends Model<User> {
     allowNull: true,
   })
   updated_at: DateEntityType;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  refresh_token: string;
 
   @HasMany(() => Rating)
   ratings: Rating[];
