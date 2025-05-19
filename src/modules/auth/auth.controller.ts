@@ -2,6 +2,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -11,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
-import { CreateUserDTO, RefreshDto } from '../users/users.dto';
+import { CreateUserDTO, LoginUserDTO, RefreshDto } from '../users/users.dto';
 import { SuccessResponseDTO } from '../../responses/successResponse';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { User } from '../../database/entities/User.entity';
@@ -52,7 +53,6 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
     // @Body() { refresh_token }: RefreshDto,
   ): Promise<SuccessResponseDTO> {
-    console.log({ user });
     const { accessToken, refreshToken } = await this.authService.refreshTokens(
       user.id,
       req.cookies['refresh_token'],
@@ -70,5 +70,43 @@ export class AuthController {
       access_token: accessToken,
       refresh_token: refreshToken,
     });
+  }
+
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  async login(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+    @Body() data: LoginUserDTO,
+  ): Promise<SuccessResponseDTO> {
+    const { user, accessToken, refreshToken } =
+      await this.authService.login(data);
+
+    res.cookie('refresh_token', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/api/auth',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return new SuccessResponseDTO({ user, accessToken, refreshToken });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('logout')
+  @HttpCode(HttpStatus.OK)
+  async logout(
+    @Res({ passthrough: true }) res: Response,
+    @RequestUser() user: User,
+  ): Promise<SuccessResponseDTO> {
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/api/auth',
+    });
+
+    return await this.authService.logout(user);
   }
 }

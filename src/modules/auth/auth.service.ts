@@ -5,13 +5,12 @@ import {
 } from '@nestjs/common';
 import { User } from '../../database/entities/User.entity';
 import { InjectModel } from '@nestjs/sequelize';
-import { SuccessResponseDTO } from '../../responses/successResponse';
-import { CreateUserDTO } from '../users/users.dto';
+import { CreateUserDTO, LoginUserDTO } from '../users/users.dto';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { RolesEnum } from '../../enum';
 import * as bcrypt from 'bcrypt';
+import { SuccessResponseDTO } from '../../responses/successResponse';
 
 @Injectable()
 export class AuthService {
@@ -38,6 +37,56 @@ export class AuthService {
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
     };
+  }
+
+  async login(data: LoginUserDTO) {
+    const { email, password } = data;
+
+    const existUser = await this.userRepo
+      .scope(null)
+      .findOne({ where: { email } });
+
+    if (!existUser) {
+      throw new UnauthorizedException('Email or password is incorrect.');
+    }
+
+    const isSamePass = await bcrypt.compare(password, existUser.password);
+
+    if (!isSamePass) {
+      throw new UnauthorizedException('Email or password is incorrect.');
+    }
+
+    const tokens = await this.generateTokens(
+      existUser.id,
+      existUser.email,
+      existUser.role,
+    );
+    await this.saveRefreshToken(existUser.id, tokens.refreshToken);
+
+    const user = existUser.get({ plain: true });
+
+    delete user.password;
+    delete user.refresh_token;
+
+    return {
+      user,
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+    };
+  }
+
+  async logout(user: User): Promise<SuccessResponseDTO> {
+    try {
+      await this.userRepo.update(
+        { refresh_token: null },
+        { where: { email: user.email } },
+      );
+
+      return new SuccessResponseDTO();
+    } catch (e) {
+      console.log(e);
+      throw new BadRequestException('Smth went wrong.');
+    }
   }
 
   async refreshTokens(userId: number, refreshToken: string) {

@@ -35,3 +35,14 @@ export class RefreshDto {
   @IsNotEmpty()
   refresh_token: string;
 }
+
+export class LoginUserDTO {
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @MinLength(6)
+  @IsString()
+  password: string;
+}
