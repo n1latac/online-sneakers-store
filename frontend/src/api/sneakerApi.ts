@@ -4,7 +4,11 @@ import type { Sneaker } from '../interfaces';
 export const sneakerApi = api.injectEndpoints({
   endpoints: (build) => ({
     getSneakers: build.query<
-      { data: Sneaker[]; success: boolean; error: any },
+      {
+        data: { sneakers: Sneaker[]; count: number };
+        success: boolean;
+        error: any;
+      },
       { type_id?: number; brand_id?: number; page?: number; limit?: number }
     >({
       query: (params) => ({
@@ -22,7 +26,7 @@ export const sneakerApi = api.injectEndpoints({
     }),
     createSneaker: build.mutation<
       { data: Sneaker; success: boolean; error: any },
-      Partial<Sneaker>
+      FormData
     >({
       query: (body) => ({
         url: 'sneakers/create',

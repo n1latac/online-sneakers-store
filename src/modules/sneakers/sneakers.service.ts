@@ -13,8 +13,16 @@ export class SneakersService {
     private readonly sneakersInfoRepo: typeof SneakersInfo,
   ) {}
   async createSneaker(data: CreateSneakerDto, file) {
-    const { name, price: priceString, brand_id, type_id, info } = data;
+    const {
+      name,
+      price: priceString,
+      brand_id: brandIdString,
+      type_id: typeIdString,
+      info,
+    } = data;
     const price = Number(priceString);
+    const brand_id = Number(brandIdString);
+    const type_id = Number(typeIdString);
     try {
       const sneaker = await Sneaker.create({
         name,
@@ -90,7 +98,7 @@ export class SneakersService {
         offset,
       });
     }
-    return { result: sneakers.rows, count: sneakers.count };
+    return { sneakers: sneakers.rows, count: sneakers.count };
   }
 
   async getOneSneakerById(id: number) {

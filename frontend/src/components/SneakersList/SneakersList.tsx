@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import cl from './SneakersList.module.css';
 import SneakerItem from '../SneakerItem/SneakerItem';
 
-const SneakersList: React.FC = () => {
+const SneakersList = () => {
   const sneakers = useSelector((state: RootState) => state.sneaker.sneakers);
 
   if (!sneakers || sneakers.length === 0) {

@@ -26,6 +26,6 @@ import { UsersService } from './modules/users/users.service';
     TypesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_GUARD, useClass: RolesGuard }],
+  providers: [AppService],
 })
 export class AppModule {}

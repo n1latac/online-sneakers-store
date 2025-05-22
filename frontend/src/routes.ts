@@ -9,12 +9,13 @@ import {
 import SneakerPage from './pages/SneakerPage';
 import HomePage from './pages/HomePage';
 import Auth from './pages/Auth';
+import Admin from './pages/Admin';
 
 export const authRoutes = [
-  // {
-  //   path: ADMIN_ROUTE,
-  //   Component: Admin
-  // },
+  {
+    path: ADMIN_ROUTE,
+    Component: Admin,
+  },
   // {
   //   path: BASKET_ROUTE,
   //   Component: Basket

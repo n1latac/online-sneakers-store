@@ -10,7 +10,7 @@ module.exports = {
           first_name: 'super',
           last_name: 'admin',
           email: 'admin@mail.com',
-          password: 'admin',
+          password: '123456',
           role: 'admin',
           created_at: new Date(),
           updated_at: new Date(),

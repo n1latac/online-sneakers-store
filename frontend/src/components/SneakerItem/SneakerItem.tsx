@@ -11,6 +11,7 @@ interface SneakerItemProps {
 
 const SneakerItem: React.FC<SneakerItemProps> = ({ sneaker }) => {
   const navigate = useNavigate();
+  console.log(sneaker, 'here');
 
   return (
     <div

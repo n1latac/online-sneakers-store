@@ -20,11 +20,11 @@ export class CreateSneakerDto {
   img: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsString()
   type_id: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsString()
   brand_id: number;
 
   @IsOptional()

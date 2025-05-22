@@ -7,11 +7,13 @@ import { ADMIN_ROUTE, HOME_ROUTE, LOGIN_ROUTE } from '../../utils/constants';
 import { logout } from '../../store/userSlice';
 import { RootState } from '../../store';
 import { useLogoutMutation } from '../../api/userApi';
+import { User } from '../../interfaces';
+import { RolesEnum } from '../../enum';
 
 const NavBar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isAuth = useSelector((state: RootState) => state.user.isAuth);
+  const user = useSelector((state: RootState) => state.user);
   const [logoutApi] = useLogoutMutation();
 
   const handleLogout = () => {
@@ -26,14 +28,16 @@ const NavBar = () => {
           Sneakers Store
         </Link>
         <div className={cl.navbarButtons}>
-          {isAuth ? (
+          {user?.isAuth ? (
             <>
-              <button
-                className={cl.navButton}
-                onClick={() => navigate(ADMIN_ROUTE)}
-              >
-                Admin page
-              </button>
+              {user?.user?.role === RolesEnum.ADMIN ? (
+                <button
+                  className={cl.navButton}
+                  onClick={() => navigate(ADMIN_ROUTE)}
+                >
+                  Admin page
+                </button>
+              ) : null}
               <button className={cl.navButton} onClick={handleLogout}>
                 Logout
               </button>

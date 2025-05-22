@@ -48,7 +48,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (sneakersData) {
-      dispatch(setSneakers(sneakersData?.data));
+      dispatch(setSneakers(sneakersData?.data?.sneakers));
     }
   }, [sneakersData?.data, dispatch]);
 

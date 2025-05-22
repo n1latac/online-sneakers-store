@@ -1,7 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { User } from '../interfaces';
 
-const initialState = {
-  user: {},
+interface UserState {
+  user: User | null;
+  isAuth: boolean;
+}
+
+const initialState: UserState = {
+  user: null,
   isAuth: false,
 };
 
@@ -9,12 +15,12 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login(state, action) {
+    login(state, action: PayloadAction<User>) {
       state.user = action.payload;
       state.isAuth = true;
     },
     logout(state) {
-      state.user = {};
+      state.user = null;
       state.isAuth = false;
     },
   },
