@@ -1,0 +1,11 @@
+.sneakersList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.sneakersList__item {
+    flex: 0 0 calc(25% - 20px);
+    box-sizing: border-box;
+}

@@ -9,6 +9,10 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
   app.use(cookieParser());
-  await app.listen(process.env.PORT ?? 3000);
+  app.enableCors({ origin: true, credentials: true });
+
+  await app.listen(process.env.PORT ?? 4000, () => {
+    console.log(`Server start on port: ${process.env.PORT}`);
+  });
 }
 bootstrap();

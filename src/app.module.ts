@@ -6,6 +6,12 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { SequelizeRootConfig } from './config/db.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { SneakersModule } from './modules/sneakers/sneakers.module';
+import { BrandsModule } from './modules/brands/brands.module';
+import { TypesModule } from './modules/types/types.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './guards/roles.guard';
+import { UsersService } from './modules/users/users.service';
 
 @Module({
   imports: [
@@ -15,8 +21,11 @@ import { UsersModule } from './modules/users/users.module';
     SequelizeModule.forRootAsync(SequelizeRootConfig()),
     AuthModule,
     UsersModule,
+    SneakersModule,
+    BrandsModule,
+    TypesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: RolesGuard }],
 })
 export class AppModule {}

@@ -31,7 +31,7 @@ export class Sneaker extends Model<Sneaker> {
     type: DataType.DECIMAL,
     allowNull: true,
   })
-  price: string;
+  price: number;
 
   @Column({
     type: DataType.STRING,

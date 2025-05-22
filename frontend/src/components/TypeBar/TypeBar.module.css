@@ -1,0 +1,26 @@
+.typeBar {
+    display: flex;
+    flex-direction: column;
+    margin-top: 60px;
+}
+
+.typeItem {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.typeItem + .typeItem {
+    border-top: none;
+}
+
+.typeItem:hover {
+    background-color: #f5f5f5;
+}
+
+.typeItem.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}

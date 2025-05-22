@@ -33,6 +33,10 @@ export class UsersService {
     return bcrypt.hash(password, 10);
   }
 
+  async getUserById(id: number) {
+    return await this.userRepo.findByPk(id);
+  }
+
   async getUserByEmail(email: string) {
     return await this.userRepo.findOne({ where: { email } });
   }

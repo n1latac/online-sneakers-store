@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      device_id: {
+      sneaker_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
       },

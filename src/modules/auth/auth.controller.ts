@@ -41,7 +41,7 @@ export class AuthController {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return new SuccessResponseDTO({ user, accessToken, refreshToken });
+    return new SuccessResponseDTO({ user, accessToken });
   }
 
   @UseGuards(RefreshGuard)
@@ -90,7 +90,7 @@ export class AuthController {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return new SuccessResponseDTO({ user, accessToken, refreshToken });
+    return new SuccessResponseDTO({ user, accessToken });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -108,5 +108,29 @@ export class AuthController {
     });
 
     return await this.authService.logout(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('check')
+  async checkJwt(
+    // @Req() req: Request,
+    // @Res() res: Response,
+    @RequestUser() user: User,
+  ): Promise<SuccessResponseDTO> {
+    // console.log(user, req.cookies['refresh_token']);
+    // const { accessToken, refreshToken } = await this.authService.refreshTokens(
+    //   user.id,
+    //   req.cookies['refresh_token'],
+    // );
+
+    // res.cookie('refresh_token', refreshToken, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: 'strict',
+    //   path: '/api/auth',
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    // });
+
+    return new SuccessResponseDTO({ user });
   }
 }
