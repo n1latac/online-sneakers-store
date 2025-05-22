@@ -1,6 +1,5 @@
 import { api } from './index';
 import { User } from '../interfaces';
-import { data } from 'react-router-dom';
 
 export const userApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -36,9 +35,11 @@ export const userApi = api.injectEndpoints({
     }),
     checkAuth: build.query<User, void>({
       query: () => 'auth/check',
-      transformResponse: (response: { data: { user: User } }) => {
-        const { user } = response.data;
-        // localStorage.setItem('token', accessToken);
+      transformResponse: (response: {
+        data: { user: User; accessToken: string };
+      }) => {
+        const { user, accessToken } = response.data;
+        localStorage.setItem('token', accessToken);
         return user;
       },
       providesTags: ['User'],
